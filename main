@@ -1,0 +1,59 @@
+# Функція для прямого перетворення S-блоку
+def forward_s_block(data, s_box):
+    result = []
+    for value in data:
+        result.append(s_box[value])
+    return result
+
+# Функція для зворотного перетворення S-блоку
+def inverse_s_block(data, s_box):
+    result = []
+    for value in data:
+        inverse_index = s_box.index(value)
+        result.append(inverse_index)
+    return result
+
+# Функція для прямого перетворення P-блоку
+def forward_p_block(data, permutation_table):
+    result = []
+    for index in permutation_table:
+        result.append(data[index])
+    return result
+
+# Функція для зворотного перетворення P-блоку
+def inverse_p_block(data, permutation_table):
+    result = [0] * len(data)
+    for i, index in enumerate(permutation_table):
+        result[index] = data[i]
+    return result
+
+
+# Створення таблиці 4x4 для S-блоку
+s_box = [
+    [1, 0, 3, 2],
+    [3, 2, 1, 0],
+    [0, 2, 1, 3],
+    [3, 1, 3, 2]
+]
+
+# Тест для S-блоку
+data = [2, 0, 3, 1]
+encrypted_data = forward_s_block(data, s_box)
+decrypted_data = inverse_s_block(encrypted_data, s_box)
+print("Пряме перетворення S-блоку:", encrypted_data)
+print("Зворотне перетворення S-блоку:", decrypted_data)
+print("Початкові дані:", data)
+print("Результат співпадає з початковими даними:", decrypted_data == data)
+
+
+# Створення таблиці перестановки для P-блоку
+permutation_table = [1, 3, 0, 2]
+
+# Тест для P-блоку
+data = [2, 0, 3, 1]
+encrypted_data = forward_p_block(data, permutation_table)
+decrypted_data = inverse_p_block(encrypted_data, permutation_table)
+print("Пряме перетворення P-блоку:", encrypted_data)
+print("Зворотне перетворення P-блоку:", decrypted_data)
+print("Початкові дані:", data)
+print("Результат співпадає з початковими даними:", decrypted_data == data)
